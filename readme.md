@@ -1,5 +1,7 @@
 ## Osmozis bypass
 
+![](https://jari.lol/nkeGPL2cKA.png)
+
 Simple script that bypasses osmozis wifi blocking by requesting a free 10 minute trial... every 10 minutes.
 Requires tesseract to be installed.
 

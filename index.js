@@ -19,6 +19,8 @@ if (process.getuid() !== 0) {
     return;
 }
 
+const toRGB = (hex) => hex === 'green' ? [0, 255, 0] : color(hex).array();
+
 const spoof = async () => {
     console.log ('Spoof required, spoofing... ☁')
 
@@ -46,9 +48,10 @@ const giveMeWifi = async () => {
     renewalRunning = true;
 
     // get sess token
-    const redirectUrl = await getAuthUrl()
+    let redirectUrl = await getAuthUrl();
 
     if (!redirectUrl) {
+        renewalRunning = false;
         return;
     }
 
@@ -58,6 +61,7 @@ const giveMeWifi = async () => {
 
     while (!authenticated) {
         try {
+            redirectUrl = await getAuthUrl()
             const token = new URL(redirectUrl).searchParams.get('key');
 
             // grab current color
@@ -78,28 +82,25 @@ const giveMeWifi = async () => {
             console.log('Captcha color:', targetColor);
 
             // color target characters white
-            const colors = {
-                type: 'rgb',
-                // weird hack needed here because color lib parses 'green' as only partially green(?!)
-                targetColor: targetColor === 'green' ? [0, 255, 0] : color(targetColor).array(),
-                replaceColor: [255, 255, 255],
-            };
             await replaceColor({
                 image: 'current.png',
-                colors,
+                colors: {
+                    type: 'rgb',
+                    targetColor: toRGB(targetColor),
+                    replaceColor: [255, 255, 255],
+                },
             })
                 .then(image => image.write('current_proc.png'));
 
             // now that our target color is white, replace every other color
             for (const current of ['yellow', 'red', 'green']) {
-                const colors = {
-                    type: 'rgb',
-                    targetColor: current === 'green' ? [0, 255, 0] : color(current).array(),
-                    replaceColor: [0, 0, 0],
-                };
                 await replaceColor({
                     image: 'current_proc.png',
-                    colors,
+                    colors: {
+                        type: 'rgb',
+                        targetColor: toRGB(current),
+                        replaceColor: [0, 0, 0],
+                    },
                 })
                     .then(image => image.write('current_proc.png'));
             }
