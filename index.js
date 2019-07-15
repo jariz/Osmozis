@@ -29,7 +29,7 @@ const spoof = async () => {
     await run('networksetup -setairportnetwork en0 "Hotzone 14 - Le Royannais"');
 
     // wait for network to come back up online
-    const redirectUrl = null
+    let redirectUrl = null
     while (!redirectUrl) {
         try {
             redirectUrl = await getAuthUrl();
