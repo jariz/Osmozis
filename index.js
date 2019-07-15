@@ -49,7 +49,6 @@ const giveMeWifi = async () => {
     const redirectUrl = await getAuthUrl()
 
     if (!redirectUrl) {
-        console.log('Network appears to be unblocked! ✌️\nWill retry in a minute.');
         return;
     }
 
@@ -151,5 +150,6 @@ const go = () => {
             .catch(x => console.error(pe.render(x)));
     }
 }
-setInterval(() => go(), 1000 * 60);
+
+setInterval(() => go(), 1000);
 go();
