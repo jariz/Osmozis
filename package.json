@@ -15,11 +15,11 @@
     "delay": "^4.3.0",
     "every": "0.0.1",
     "faker": "^4.1.0",
-    "jimp": "^0.6.4",
+    "jimp": "^0.22.7",
     "node-fetch": "^2.6.0",
     "pretty-error": "^2.1.1",
     "query-string": "^6.8.1",
-    "replace-color": "^2.1.0",
+    "replace-color": "^2.3.0",
     "spoof": "^2.0.1"
   }
 }
